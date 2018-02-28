@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<test type="myftp">
+    <info>
+      <version>1.0</version>
+      <date>2018-02-28</date>
+    </info>
+    <ftpserver>
+      <fhost>192.168.254.220</fhost>
+      <!--ftp server ip-->
+      <ftpuser>ftpuser</ftpuser>
+      <!-- ftpuser name -->
+      <ftppw>test888</ftppw>
+      <!--ftp password-->
+      <service_time>99999999999999999999999999</service_time>
+      <!--Unit: second-->
+      <dlthreadnum>0</dlthreadnum>
+      <ulthreadnum>0</ulthreadnum>
+      <dllocalpath>F:/TMP/1file</dllocalpath>
+      <dlremotepath>/home/ftpuser/1file</dlremotepath>
+      <ullocalpath>F:/TMP/autoup</ullocalpath>
+      <ulremotepath>/home/ftpuser/autoup</ulremotepath>
+    </ftpserver>
+</test>
