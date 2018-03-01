@@ -70,7 +70,7 @@ class MyFTP(threading.Thread):
 			try:
 				ftp.login(self.loginname, self.loginpassword)
 			except Exception, e:
-				return (0, '{} login failed'.format(self.remoteHost))
+				return (0, '{} login failed {}'.format(self.remoteHost, e))
 			else:
 				return (1, ftp)
 	
