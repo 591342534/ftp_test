@@ -65,7 +65,7 @@ class MyFTP(threading.Thread):
 		try:
 			ftp.myConnect(self.remoteHost, self.remotePort, 5, (self.source_address, 0))
 		except Exception, e:
-			print(str(e))
+			self.logger.error(str(e))
 			return (0, '{} conncet failed'.format(self.remoteHost))
 		else:
 			try:
