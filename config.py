@@ -46,11 +46,13 @@ class Parsing_XML():
 			ftp_ulremotepath = self.get_nodevalue(node_ulremotepath[0])
 			node_servicetime = self.get_xmlnode(node, 'service_time')
 			ftp_servicetime = self.get_nodevalue(node_servicetime[0])
+			node_sourceaddress = self.get_xmlnode(node, 'source_address')
+			ftp_sourceaddress = self.get_nodevalue(node_sourceaddress[0])
 			ftp_parameters['ftp_host'],ftp_parameters['ftp_user'],ftp_parameters['ftp_pw'],ftp_parameters['ftp_dlthreadnum'],\
 			ftp_parameters['ftp_ulthreadnum'],ftp_parameters['ftp_dllocalpath'],ftp_parameters['ftp_dlremotepath'],\
-			ftp_parameters['ftp_ullocalpath'],ftp_parameters['ftp_ulremotepath'],ftp_parameters['ftp_servicetime']=\
+			ftp_parameters['ftp_ullocalpath'],ftp_parameters['ftp_ulremotepath'],ftp_parameters['ftp_servicetime'],ftp_parameters['ftp_sourceaddress']=\
 			ftp_host, ftp_user, ftp_pw, ftp_dlthreadnum, ftp_ulthreadnum, ftp_dllocalpath,ftp_dlremotepath, ftp_ullocalpath,\
-			ftp_ulremotepath, ftp_servicetime
+			ftp_ulremotepath, ftp_servicetime, ftp_sourceaddress
 		return ftp_parameters
 
 if __name__ == "__main__":

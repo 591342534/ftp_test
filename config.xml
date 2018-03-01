@@ -12,10 +12,11 @@
       <!-- ftpuser name -->
       <ftppw>test888</ftppw>
       <!--ftp password-->
+      <source_address>192.168.100.71</source_address>
       <service_time>99999999999999999999999999</service_time>
       <!--Unit: second-->
-      <dlthreadnum>0</dlthreadnum>
-      <ulthreadnum>0</ulthreadnum>
+      <dlthreadnum>1</dlthreadnum>
+      <ulthreadnum>1</ulthreadnum>
       <dllocalpath>F:/TMP/1file</dllocalpath>
       <dlremotepath>/home/ftpuser/1file</dlremotepath>
       <ullocalpath>F:/TMP/autoup</ullocalpath>

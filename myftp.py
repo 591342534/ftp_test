@@ -5,6 +5,7 @@ import sys
 import os
 import os.path
 import time
+import socket
 import getopt
 import threading
 import logging
@@ -14,12 +15,32 @@ from config import Parsing_XML
 is_running = True
 is_connected = True
 
+class connectFtp(FTP):
+	
+	def myConnect(self, host='', port=0, timeout=-999, source_address=None):
+		'''Connect to host.  Arguments are:
+		 - host: hostname to connect to (string, default previous host)
+		 - port: port to connect to (integer, default previous port)
+		'''
+		if host != '':
+			self.host = host
+		if port > 0:
+			self.port = port
+		if timeout != -999:
+			self.timeout = timeout
+		self.sock = socket.create_connection((self.host, self.port), self.timeout, source_address)
+		self.af = self.sock.family
+		self.file = self.sock.makefile('rb')
+		self.welcome = self.getresp()
+		return self.welcome
+	
 class MyFTP(threading.Thread):
 	'''''
 	conncet to FTP Server
 	'''
-	def __init__(self, configs, dir='DL', remotePath='', localPath='', remotepath='', localpath=''):
+	def __init__(self, configs, dir='DL', remotePath='', localPath='', remotepath='', localpath='', source_address=None):
 		threading.Thread.__init__(self)
+		self.source_address =source_address
 		self.configs = configs
 		self.direction=dir
 		self.remoteHost = self.configs['ftp_host']
@@ -40,10 +61,11 @@ class MyFTP(threading.Thread):
 			self.upload()
 
 	def ConnectFTP(self):
-		ftp = FTP()
+		ftp = connectFtp()
 		try:
-			ftp.connect(self.remoteHost, self.remotePort, 5)
+			ftp.myConnect(self.remoteHost, self.remotePort, 5, (self.source_address, 0))
 		except Exception, e:
+			print(str(e))
 			return (0, '{} conncet failed'.format(self.remoteHost))
 		else:
 			try:
@@ -240,17 +262,18 @@ class MyThread:
 		self.localPath = self.configs['ftp_dllocalpath']
 		self.remotepath = self.configs['ftp_ulremotepath']
 		self.localpath = self.configs['ftp_ullocalpath']
+		self.source_address = self.configs['ftp_sourceaddress']
 		self.loadthreads = []
 		self.ratelogger = setrateloger()
-
+		
 	def dotest(self):
 		global is_running
 		# create test thread
 		for i in range(int(self.dlthreadnum)):
-			downthread =MyFTP(self.configs, dir='DL',remotePath=self.remotePath+str(i), localPath=self.localPath+str(i))
+			downthread = MyFTP(self.configs, dir='DL',remotePath=self.remotePath+str(i), localPath=self.localPath+str(i), source_address = self.source_address)
 			self.loadthreads.append(downthread)
 		for i in range(int(self.ulthreadnum)):
-			upthread = MyFTP(self.configs, dir='UL',remotepath=self.remotepath+str(i), localpath=self.localpath+str(i))
+			upthread = MyFTP(self.configs, dir='UL',remotepath=self.remotepath+str(i), localpath=self.localpath+str(i),  source_address = self.source_address)
 			self.loadthreads.append(upthread)
 		for thread in self.loadthreads:
 			thread.setDaemon(True)
@@ -349,13 +372,15 @@ def argumentcheck():
 			configs['ftp_ullocalpath'] = value
 		elif op == "-R":
 			configs['ftp_ulremotepath'] = value
+		elif op == "-S":
+			configs['ftp_sourceaddress'] = value
 		elif op == "-h":
 			usage()
 	return configs
 
 def usage():
 	print('Usage: -D [dlthreadnum] -U[ulthreadnum] -H [ftphost] -u [username] -p [password] -t [servicetime] -l [dllocalpath] -r [dlremotepath] '
-	      '-L [ullocalpath] -R [ulremotepath] -h')
+	      '-L [ullocalpath] -R [ulremotepath] -S [source_address] -h')
 	print('\t-D option: dl thread num')
 	print('\t-U option: ul thread num')
 	print('\t-H option: ftp host')
@@ -366,6 +391,7 @@ def usage():
 	print('\t-r option: dl remote file path')
 	print('\t-L option: ul local file path')
 	print('\t-R option: ul remote file path')
+	print('\t-S option: source address')
 	print('\t-h option: print this help information')
 	sys.exit(10)
 	
