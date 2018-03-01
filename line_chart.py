@@ -6,9 +6,9 @@ import matplotlib.pyplot as plt
 
 def getSize(rate):
 	if 'bit' in rate:
-		return str(int(rate.split(' ')[0] / 1024 / 1024))
+		return str(int(rate.split(' ')[0]) / 1024 / 1024)
 	if 'Kb' in rate:
-		return str(int(rate.split(' ')[0] / 1024))
+		return str(int(rate.split(' ')[0]) / 1024)
 	if 'Mb' in rate:
 		return rate.split(' ')[0]
 	if 'Gb' in rate:
@@ -35,10 +35,10 @@ def lineChart():
 			dlrate.append(dlr)
 			ulrate.append(ulr)
 	x = range(0, x)
-	plt.plot(x, dlrate, label='DL rate', linewidth=3, color='r', marker='o',
-	         markerfacecolor='blue', markersize=12)
-	plt.plot(x, ulrate, label='UL rate', linewidth=3, color='b', marker='o',
-	         markerfacecolor='red', markersize=12)
+	plt.plot(x, dlrate, label='DL rate', linewidth=1, color='r',
+	         markerfacecolor='blue')
+	plt.plot(x, ulrate, label='UL rate', linewidth=1, color='b',
+	         markerfacecolor='red')
 	plt.xlabel('Time: s')
 	plt.ylabel('Rate: Mb/s')
 	plt.title('Rate Graph')

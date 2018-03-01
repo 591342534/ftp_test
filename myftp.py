@@ -218,7 +218,6 @@ class MyFTP(threading.Thread):
 					while True:
 						buf = localf.read(1024 * 1024)
 						if not len(buf):
-							exit_flag = True
 							break
 						try:
 							datasock.sendall(buf)
@@ -237,7 +236,7 @@ class MyFTP(threading.Thread):
 					# print('\n', 'upload speed:{:.2f}'.format(float(d) / float(time.time() - stime) / 1024 / 1024))
 					self.datarate = (float(d) / float(time.time() - stime))
 					if cmpsize == lsize:
-						ftp.delete(self.remotepath)
+						break
 				try:
 					datasock.close()
 					localf.close()
@@ -267,6 +266,7 @@ class MyThread:
 		
 	def dotest(self):
 		global is_running
+		global is_connected
 		# create test thread
 		for i in range(int(self.dlthreadnum)):
 			downthread = MyFTP(self.configs, dir='DL',remotePath=self.remotePath+str(i), localPath=self.localPath+str(i), source_address = self.source_address)

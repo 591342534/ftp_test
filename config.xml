@@ -19,7 +19,7 @@
       <ulthreadnum>1</ulthreadnum>
       <dllocalpath>F:/TMP/1file</dllocalpath>
       <dlremotepath>/home/ftpuser/1file</dlremotepath>
-      <ullocalpath>F:/TMP/autoup</ullocalpath>
-      <ulremotepath>/home/ftpuser/autoup</ulremotepath>
+      <ullocalpath>F:/TMP/up</ullocalpath>
+      <ulremotepath>/home/ftpuser/up</ulremotepath>
     </ftpserver>
 </test>
