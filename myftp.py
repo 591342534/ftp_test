@@ -42,7 +42,7 @@ class MyFTP(threading.Thread):
 	def ConnectFTP(self):
 		ftp = FTP()
 		try:
-			ftp.connect(self.remoteHost, self.remotePort, 600)
+			ftp.connect(self.remoteHost, self.remotePort, 5)
 		except Exception, e:
 			return (0, '{} conncet failed'.format(self.remoteHost))
 		else:
@@ -57,6 +57,8 @@ class MyFTP(threading.Thread):
 		global is_running
 		global is_connected
 		while True:
+			if os.path.exists(self.localPath):
+				os.remove(self.localPath)
 			try:
 				is_connected = True
 				# connect to the FTP Server and check the return
@@ -316,20 +318,16 @@ def setrateloger():
 	return logger
 
 def argumentcheck():
-	if len(sys.argv)<2:
-		usage()
 	configs = Parsing_XML().get_ftp_config()
 	try:
 		opts, args = getopt.getopt(sys.argv[1:], "hD:U:H:u:p:t:l:r:L:R")
 	except:
 		usage()
 	check = map(lambda x : x[0] ,opts)
-	if '-D' not in check:
+	if '-D' not in check and '-U' in check:
 		configs['ftp_dlthreadnum'] = 0
-	if '-U' not in check:
+	if '-U' not in check and '-D' in check:
 		configs['ftp_ulthreadnum'] = 0
-	if '-D' not in check and '-U' not in check:
-		usage()
 	for op, value in opts:
 		if op == "-D":
 			configs['ftp_dlthreadnum'] = value
@@ -353,7 +351,6 @@ def argumentcheck():
 			configs['ftp_ulremotepath'] = value
 		elif op == "-h":
 			usage()
-	configs['op']=sys.argv[1][1]
 	return configs
 
 def usage():
