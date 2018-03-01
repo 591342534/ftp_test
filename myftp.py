@@ -354,9 +354,10 @@ def argumentcheck():
 	return configs
 
 def usage():
-	print('Usage: %s <-D or -U> -H [ftphost] -u [username] -p [password] -t [servicetime] -l [dllocalpath] -r [dlremotepath] '
-	      '-L [ullocalpath] -R [ulremotepath] -h'% os.path.basename(sys.argv[0]))
-	print('\t-D or -U is download or upload')
+	print('Usage: -D [dlthreadnum] -U[ulthreadnum] -H [ftphost] -u [username] -p [password] -t [servicetime] -l [dllocalpath] -r [dlremotepath] '
+	      '-L [ullocalpath] -R [ulremotepath] -h')
+	print('\t-D option: dl thread num')
+	print('\t-U option: ul thread num')
 	print('\t-H option: ftp host')
 	print('\t-u option: username')
 	print('\t-p option: password')
